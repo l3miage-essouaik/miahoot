@@ -1,1 +1,21 @@
-<router-outlet></router-outlet>
+<mat-toolbar color="primary"> 
+    <span>Miahoot</span> 
+    <code>{{ (user | async)?.uid }}</code>
+    <a mat-button>Home</a> 
+    <a mat-button>About</a> 
+    <a mat-button (click)="login()" *ngIf="showLoginButton">Log in with Google </a>
+    <a mat-button (click)="loginAnonymously()" *ngIf="showLoginButton">Log in anonymously </a>
+    <div class="menu" *ngIf="showLogoutButton">
+        <img class="profile-pic" [src]="userPhotoUrl" (click)="toggleDropdown()">
+        <div class="dropdown" *ngIf="showDropdown">
+          <a mat-button routerLink="/accountConfig">Profile</a>
+          <a id="logout" mat-btton (click)="logout()" *ngIf="showLogoutButton">Log out</a>
+        </div>
+      </div>
+      
+  </mat-toolbar>
+  <div class="loading-container" *ngIf="isLoading | async">
+    <mat-progress-spinner color="primary" mode="indeterminate" [diameter]="50" [strokeWidth]="3"></mat-progress-spinner>
+  </div>
+  
+  <router-outlet></router-outlet>
