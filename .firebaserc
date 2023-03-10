@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "miahoot-c27da": {
+      "hosting": {
+        "miahoot": [
+          "miahoot-c27da"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "miahoot-c27da"
+  }
+}
