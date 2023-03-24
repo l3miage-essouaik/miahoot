@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DataService } from './services/data.service';
 
 
 @Component({
@@ -30,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showLoginButton = false;
   showLogoutButton = false;
   //optional : pour le cas ou on ne puisse pas faire l'injection 
-  constructor(@Optional() private auth: Auth) {
+  constructor(@Optional() private auth: Auth, private dataService: DataService) {
     if (auth) {
       this.user = authState(this.auth);
       this.userDisposable = authState(this.auth).pipe(
