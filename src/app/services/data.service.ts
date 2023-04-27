@@ -6,12 +6,12 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Auth, authState } from '@angular/fire/auth';
 import { docData, Firestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup } from '@angular/forms';
+import { updateDoc } from "firebase/firestore";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-
   obsMiUser: Observable<miahootUser | undefined>
 
   constructor(private auth: Auth, private fs: Firestore) {
@@ -37,26 +37,23 @@ export class DataService {
 
         if(!snap.exists()){          
           setDoc(docUser, {
-            name : user.displayName ?? user.email ?? user.uid,
-            photoURL : user.photoURL ?? "https://conservativeenthusiast.com/wp-content/uploads/2020/09/Arthur_Schopenhauer_colorized.png"
+            name: user.displayName ?? user.email ?? user.uid,
+            photoURL: user.photoURL ?? "https://conservativeenthusiast.com/wp-content/uploads/2020/09/Arthur_Schopenhauer_colorized.png"
           })
         }
-
-      }
-      
+      }  
     });
   }
-   fg: FormGroup<{ 
-    name: FormControl<string>, 
-    photoURL: FormControl<string> 
-    photoFile: FormControl<File | undefined> 
-  }>; 
-  updateUser(user: miahootUser) {
 
+  updateUser = (user: Partial<miahootUser>) => {
+    const uid = this.auth.currentUser?.uid;
+    if (!uid) {
+      throw new Error("Utilisateur inexistant!");
+    }
+    const docId = `users/${uid}`;
+    const docUser = doc(this.fs, docId).withConverter(userConverter);
+    return updateDoc(docUser,user);
   }
-
-  
-    
-    
+ 
 
 }
